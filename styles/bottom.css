@@ -30,6 +30,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  flex: 2;
 }
 
 .button-bottom{
@@ -72,4 +73,16 @@
   margin-top: 6px;
   margin-bottom: 0;
   color: rgb(232, 228, 219);
+}
+
+.left-bottom{
+  flex: 1;
+  display: flex;
+  justify-content: start; 
+  margin-left: 60px;
+}
+
+.right-bottom{
+  flex: 1;
+  margin-right: 60px;
 }

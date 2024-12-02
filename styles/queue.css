@@ -1,9 +1,78 @@
 .queue-main-div{
   position: fixed;
   bottom: 100px;
-  left: 300px;
-  height: 700px;
-  width: 400px;
-  background-color: lightblue;
+  left: 130px;
+  height: 550px;
+  width: 300px;
+  background-color: rgb(155, 161, 127);
   z-index: 10;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgb(104, 115, 81);
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+
+  row-gap: 20px;
+
+  overflow-y: auto;
+}
+
+.queue-main-div::-webkit-scrollbar-track{
+  background-color: rgb(104, 115, 81);
+}
+
+.queue-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-text-queue-header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.img-profile-queue{
+  width: 60px;
+  height: 60px;
+  border: none;
+  border-radius: 30px;
+  object-fit: cover;
+}
+
+.text-queue-header{
+  color: rgb(232, 228, 219);
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.queue-div{
+  display: flex;
+}
+
+.album-img-music-queue{
+  height: 60px;
+  width: 60px;
+  border: none;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.queue-text{
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+  padding-top: 4px;
+}
+
+.queue-music-name{
+  font-size: 16px;
+  margin-bottom: 3px;
+}
+
+.queue-album-name{
+  font-size: 14px;
 }
