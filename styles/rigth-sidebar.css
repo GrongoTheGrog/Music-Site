@@ -1,0 +1,40 @@
+.right-sidebar{
+  position: fixed;
+  top: 62px;
+  bottom: 0;
+  right: 0;
+  width: 200px;
+
+  background-color: rgb(232, 228, 219);
+  border-left: 2px solid rgb(104, 115, 81);
+  z-index: 100;
+
+  transition: transform 0.5s;
+}
+
+.right-sidebar-hide{
+  transform: translate(200%);
+
+}
+
+.right-sidebar-container-text{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.right-sidebar-container-text:hover{
+  background-color: rgb(199, 196, 189);
+  cursor: pointer;
+}
+
+.text-right-sidebar{
+  color: rgb(104, 115, 81);
+  margin: 0;
+  font-size: 25px;
+}
+
+.right-sidebar-icon{
+  height: 32px;
+}
