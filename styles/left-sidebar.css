@@ -1,23 +1,24 @@
 .left-sidebar{
   position: fixed;
   width: 100px;
-  top: 62px;
+  top: 60px;
   bottom: 0px;
   left: 0;
-  background-color: rgb(232, 228, 219);
-  border-right: 2px solid rgb(104, 115, 81);
+  background-color: rgb(44, 43, 60);
+  border-right: none;
 
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
 
-  padding-top: 10px;
+  padding-top: 30px;
 
   row-gap: 15px;
 
   transform: translate(0px);
   transition: transform 0.3s;
+  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.6);
 }
 
 .left-sidebar-hide{
@@ -25,16 +26,42 @@
 }
 
 .left-sidebar-button{
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   background-color: transparent;
   border: none;
   transition: width, height 0.1s;
   padding: 0;
+
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tooltip-left-sidebar{
+  position: absolute;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 3px 8px;
+  left: 125%;
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+
+}
+
+
+
+.left-sidebar-button:hover .tooltip-left-sidebar{
+  display: flex;
+  opacity: 1;
 }
 
 .left-sidebar-button:hover{
-  height: 55px;
+  height: 50px;
   width: 55px;
   cursor: pointer;
 }

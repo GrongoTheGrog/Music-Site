@@ -16,16 +16,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
 
-  <body style="background-color: rgb(201, 193, 174);">
+  <body>
 
                     <!--- QUEUE BAR --->
 
-    <div class="queue-main-div">
+    <div class="queue-main-div js-queue-bar queue-main-div-hide">
       <div class="queue-header">
         <img src="sapo copy.jpg" alt="profile pic" class="img-profile-queue">
 
         <div class="flex-text-queue-header">
-          <div class="text-queue-header">Music Queue</div>
+          <div class="text-queue-header">Music Queue &#119070;</div>
         </div>
       </div>
 
@@ -132,7 +132,7 @@
         <button class="button-bar-header" onclick="
           hideSidebar();  
         ">
-          <img src="icons/menu_24dp_687351_FILL0_wght400_GRAD0_opsz24.svg" alt="bar icon" class="img-header-icon header-menu-icon">
+          <img src="icons/menu_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg" alt="bar icon" class="img-header-icon header-menu-icon">
         </button>
       </div>
 
@@ -140,7 +140,7 @@
         <input type="text" placeholder="Search your new favorite music" class="input-center">
 
         <button class="button-search-header">
-          <i class="fa fa-search"></i>
+          <img src="icons/search_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg">
         </button>
       </div>
 
@@ -148,20 +148,20 @@
         <button class="button-profile-pic" onclick="
            funcToggleRightSidebar();
         ">
-          <img src="sapo copy.jpg" alt="account image" class="img-account">
+          <img src="image-album/sapo copy.jpg" alt="account image" class="img-account">
         </button>
       </div>
     </div>
 
                       <!--- RIGHT SIDEBAR --->
 
-    <div class="right-sidebar" id="rightSidebar">
+    <div class="right-sidebar right-sidebar-hide" id="rightSidebar">
       <div class="right-sidebar-container-text">
         <p class="text-right-sidebar">
           Settings
         </p>
 
-        <img src="icons/settings_24dp_687351_FILL1_wght400_GRAD0_opsz24.svg" class="right-sidebar-icon">
+        <img src="icons/settings_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg" class="right-sidebar-icon">
       </div>
 
       <div class="right-sidebar-container-text">
@@ -169,7 +169,7 @@
           Account
         </p>
 
-        <img src="icons/account_circle_24dp_687351_FILL1_wght400_GRAD0_opsz24.svg" class="right-sidebar-icon">
+        <img src="icons/account_circle_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg" class="right-sidebar-icon">
       </div>
 
       <div class="right-sidebar-container-text">
@@ -177,20 +177,28 @@
           Logout
         </p>
 
-        <img src="icons/logout_24dp_687351_FILL1_wght400_GRAD0_opsz24.svg" class="right-sidebar-icon">
+        <img src="icons/logout_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg" class="right-sidebar-icon">
       </div>
     </div>
 
                        <!--- LEFT SIDEBAR --->
 
 
-    <div class="left-sidebar"> 
-      <button class="button-playlist left-sidebar-button" >
-        <img src="icons/playlist_add_24dp_687351_FILL0_wght400_GRAD0_opsz24.svg" class="left-sidebar-icon playlist-icon">
+    <div class="left-sidebar left-sidebar-hide"> 
+      <button class="button-playlist left-sidebar-button">
+        <img src="icons/playlist_add_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg" class="left-sidebar-icon playlist-icon">
+
+        <div class="tooltip-left-sidebar">
+          Playlists
+        </div>
       </button>
 
-      <button class="button-playlist left-sidebar-button" >
-        <img src="icons/favorite_24dp_687351_FILL0_wght400_GRAD0_opsz24.svg" class="left-sidebar-icon playlist-icon">
+      <button class="button-playlist left-sidebar-button">
+        <img src="icons/favorite_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg" class="left-sidebar-icon playlist-icon">
+
+        <div class="tooltip-left-sidebar">
+          Liked Content
+        </div>
       </button>
     </div>
 
@@ -203,284 +211,11 @@
     </div>    
 
     <div class="music-chain"> 
-      <div class="music-preview">
-        <div class="image" style="background-image: url(A_Night_at_the_Opera_Queen.jpg);"> <!---- 1  -->
-          <div class="play-icon-button">
-          <i class="fa fa-play play"></i>
-          </div>
-        </div>
-
-        <div class="music-stats">
-          <p class="name">
-            A Night At The Opera
-          </p>
-
-          <p class="type">
-            Album
-          </p>
-
-          <p class="band">
-            Queen
-          </p>
-        </div>
-      </div>
-
-
-      <div class="music-preview">
-        <div class="image" style="background-image: url(A_Day_at_the_Races_-_Queen_-_1976.jpg);"> <!---- 2  -->
-          <div class="play-icon-button">
-            <i class="fa fa-play play"></i>
-          </div>
-        </div>
-
-        <div class="music-stats">
-          <p class="name">
-            A Day At The Races
-          </p>
-
-          <p class="type">
-            Album
-          </p>
-
-          <p class="band">
-            Queen
-          </p>
-        </div>
-      </div>
-
-      <div class="music-preview">
-        <div class="image" style="background-image: url(Red_Hot_Chili_Peppers_-_By_the_Way.jpg);"> <!---- 3  -->
-          <div class="play-icon-button">
-            <i class="fa fa-play play"></i>
-          </div>
-        </div>
-
-        <div class="music-stats">
-          <p class="name">
-            By The Way
-          </p>
-
-          <p class="type">
-            Album
-          </p>
-
-          <p class="band">
-            Red Hot Chili Peppers
-          </p>
-        </div>
-      </div>
-
-      <div class="music-preview">
-        <div class="image" style="background-image: url(Dark_Side_of_the_Moon.png);"> <!---- 4  -->
-          <div class="play-icon-button">
-            <i class="fa fa-play play"></i>
-          </div>
-        </div>
-
-        <div class="music-stats">
-          <p class="name">
-            The Dark Side Of The Moon
-          </p>
-
-          <p class="type">
-            Album
-          </p>
-
-          <p class="band">
-            Pink Floyd
-          </p>
-        </div>
-      </div>
-
-
-      <div class="music-preview">
-        <div class="image" style="background-image: url(D_NQ_NP_663274-MLU77450377135_072024-O.webp);"> <!---- 5  -->
-          <div class="play-icon-button">
-            <i class="fa fa-play play"></i>
-          </div>
-        </div>
-
-        <div class="music-stats">
-          <p class="name">
-            Ten
-          </p>
-
-          <p class="type">
-            Album
-          </p>
-
-          <p class="band">
-            Pearl Jam
-          </p>
-        </div>
-      </div>
-
-
-      <div class="music-preview">
-        <div class="image" style="background-image: url(71qxFjlZmuL._UF894\,1000_QL80_.jpg);"> <!---- 6  -->
-          <div class="play-icon-button">
-            <i class="fa fa-play play"></i>
-          </div>
-        </div>
-
-        <div class="music-stats">
-          <p class="name">
-            Hypnotize
-          </p>
-
-          <p class="type">
-            Album
-          </p>
-
-          <p class="band">
-            System of A Down
-          </p>
-        </div>
-      </div>
+      
 
     </div> 
+  
 
-    <div class="title-above-chain"> 
-      New
-    </div>    
-
-    <div class="music-chain"> 
-      <div class="music-preview">
-        <div class="image" style="background-image: url(A_Night_at_the_Opera_Queen.jpg);"> <!---- 1  -->
-          <div class="play-icon-button">
-          <i class="fa fa-play play"></i>
-          </div>
-        </div>
-
-        <div class="music-stats">
-          <p class="name">
-            A Night At The Opera
-          </p>
-
-          <p class="type">
-            Album
-          </p>
-
-          <p class="band">
-            Queen
-          </p>
-        </div>
-      </div>
-
-
-      <div class="music-preview">
-        <div class="image" style="background-image: url(A_Day_at_the_Races_-_Queen_-_1976.jpg);"> <!---- 2  -->
-          <div class="play-icon-button">
-            <i class="fa fa-play play"></i>
-          </div>
-        </div>
-
-        <div class="music-stats">
-          <p class="name">
-            A Day At The Races
-          </p>
-
-          <p class="type">
-            Album
-          </p>
-
-          <p class="band">
-            Queen
-          </p>
-        </div>
-      </div>
-
-      <div class="music-preview">
-        <div class="image" style="background-image: url(Red_Hot_Chili_Peppers_-_By_the_Way.jpg);"> <!---- 3  -->
-          <div class="play-icon-button">
-            <i class="fa fa-play play"></i>
-          </div>
-        </div>
-
-        <div class="music-stats">
-          <p class="name">
-            By The Way
-          </p>
-
-          <p class="type">
-            Album
-          </p>
-
-          <p class="band">
-            Red Hot Chili Peppers
-          </p>
-        </div>
-      </div>
-
-      <div class="music-preview">
-        <div class="image" style="background-image: url(Dark_Side_of_the_Moon.png);"> <!---- 4  -->
-          <div class="play-icon-button">
-            <i class="fa fa-play play"></i>
-          </div>
-        </div>
-
-        <div class="music-stats">
-          <p class="name">
-            The Dark Side Of The Moon
-          </p>
-
-          <p class="type">
-            Album
-          </p>
-
-          <p class="band">
-            Pink Floyd
-          </p>
-        </div>
-      </div>
-
-
-      <div class="music-preview">
-        <div class="image" style="background-image: url(D_NQ_NP_663274-MLU77450377135_072024-O.webp);"> <!---- 5  -->
-          <div class="play-icon-button">
-            <i class="fa fa-play play"></i>
-          </div>
-        </div>
-
-        <div class="music-stats">
-          <p class="name">
-            Ten
-          </p>
-
-          <p class="type">
-            Album
-          </p>
-
-          <p class="band">
-            Pearl Jam
-          </p>
-        </div>
-      </div>
-
-
-      <div class="music-preview">
-        <div class="image" style="background-image: url(71qxFjlZmuL._UF894\,1000_QL80_.jpg);"> <!---- 6  -->
-          <div class="play-icon-button">
-            <i class="fa fa-play play"></i>
-          </div>
-        </div>
-
-        <div class="music-stats">
-          <p class="name">
-            Hypnotize
-          </p>
-
-          <p class="type">
-            Album
-          </p>
-
-          <p class="band">
-            System of A Down
-          </p>
-        </div>
-      </div>
-
-    </div> 
 
 
                               <!--- BOTTOM -->
@@ -488,8 +223,8 @@
 
     <div class="bottom"> 
       <div class="left-bottom">
-        <button class="button-bottom button-queue">
-          <img src="icons/queue_music_24dp_E8E4DB_FILL0_wght400_GRAD0_opsz24.svg" alt="music-queue" class="img-bottom">
+        <button class="button-bottom js-button-queue">
+          <img src="icons/queue_music_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg" alt="music-queue" class="img-bottom">
         </button>
       </div>
 
@@ -537,6 +272,9 @@
       </div>
     </div>
 
+    <script src="data/data-music.js"></script>
+
+    <script src="scripts/content.js"></script>
     <script src="scripts/lef-sidebar.js"></script>
     <script src="scripts/bottom.js"></script>
     <script src="scripts/right-sidebar.js"></script>

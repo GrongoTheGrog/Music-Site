@@ -3,18 +3,22 @@
 }
 
 body{
-  padding: 10px;
   margin: 0;
-  height: 2000px;
+  min-height: 1000px;
   padding-top: 100px;
-  padding-left: 140px;
-  transition: padding-left 0.3s;
+  padding-left: 50px;
+  padding-right: 50px;
+  transition: padding 0.3s;
+  background-color: rgb(64, 63, 76);
 }
 
 .body-hide-left-sidebar{
-  padding-left: 40px;
+  padding-left: 140px;
 }
 
+.body-hide-right-sidebar{
+  padding-right: 200px;
+}
 
 
 html{

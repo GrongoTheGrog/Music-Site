@@ -4,10 +4,11 @@
   left: 130px;
   height: 550px;
   width: 300px;
-  background-color: rgb(155, 161, 127);
+  background-color: rgb(44, 43, 60);
   z-index: 10;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
-  border: 2px solid rgb(104, 115, 81);
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.8);
+  border: none;
+  border-radius: 5px;
   padding: 10px;
 
   display: flex;
@@ -16,11 +17,38 @@
   row-gap: 20px;
 
   overflow-y: auto;
+
+  transition: transform 0.4s ease-in-out;
 }
 
-.queue-main-div::-webkit-scrollbar-track{
-  background-color: rgb(104, 115, 81);
+.queue-main-div::-webkit-scrollbar{
+  background: rgba(255, 255, 255, 0.3); /* Thumb color */
+  border-radius: 5px;
+  width: 10px;
+  padding: 3px;
 }
+.queue-main-div::-webkit-scrollbar-track{
+  background-color: rgb(44, 43, 60);
+  border-radius: 5px;
+}
+
+.queue-main-div::-webkit-scrollbar-thumb{
+  background-color: rgb(18, 20, 32);
+  width: 2px;
+  border-radius: 5px;
+  border: 2px solid rgb(44, 43, 60);
+}
+
+.queue-main-div::-webkit-scrollbar-thumb:active{
+  background-color: rgb(10, 12, 19);
+}
+
+
+.queue-main-div-hide{
+  transform: translateY(1000px);
+}
+
+
 
 .queue-header{
   display: flex;

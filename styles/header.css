@@ -1,6 +1,6 @@
 .flex-main-header{
   display: flex;
-  background-color: rgb(155, 161, 127);
+  background-color: rgb(18, 20, 32);
   height: 60px;
   justify-content: space-between;
   align-items: center;
@@ -14,9 +14,9 @@
 
   z-index: 1000;
 
-  border-bottom: 2px solid rgb(104, 115, 81);
+  border-bottom: none;
 
-  box-shadow: 6px 0px 5px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
 }
 
 
@@ -36,25 +36,24 @@
   height: 30px;
   padding: 3px 30px;
   outline: none;
-  border: 2px solid rgb(104, 115, 81);
+  border: none;
   border-right: none;
-  background-color: rgb(232, 228, 219);
+  background-color: rgb(64, 63, 76);
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
-  color: rgb(104, 115, 81);
+  color: rgb(232, 228, 219);
 
 }
 
 .input-center::placeholder{
-  color: rgb(104, 115, 81);
+  color: white;
   font-weight: bold;
 }
 
 .button-search-header, .button-bar-header{
   width: 50px;
-  color: rgb(104, 115, 81);
-  background-color: rgb(232, 228, 219);
-  border: 2px solid rgb(104, 115, 81);
+  background-color: rgb(64, 63, 76);
+  border: none;
   border-left: none;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -67,7 +66,7 @@
 }
 
 .button-search-header:hover{
-  background-color: rgb(216, 212, 203);
+  background-color: rgb(49, 48, 58);
   cursor: pointer;
 }
 

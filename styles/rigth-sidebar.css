@@ -1,15 +1,17 @@
 .right-sidebar{
   position: fixed;
-  top: 62px;
+  top: 60px;
   bottom: 0;
   right: 0;
-  width: 200px;
+  width: 160px;
 
-  background-color: rgb(232, 228, 219);
-  border-left: 2px solid rgb(104, 115, 81);
+  background-color: rgb(44, 43, 60);
+  border-left: none;
   z-index: 100;
 
   transition: transform 0.5s;
+
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.6);
 }
 
 .right-sidebar-hide{
@@ -17,24 +19,26 @@
 
 }
 
+
 .right-sidebar-container-text{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 15px;
+  padding-left: 25px;
 }
 
 .right-sidebar-container-text:hover{
-  background-color: rgb(199, 196, 189);
+  background-color: rgb(34, 33, 46);
   cursor: pointer;
 }
 
 .text-right-sidebar{
-  color: rgb(104, 115, 81);
+  color: rgb(232, 228, 219);
   margin: 0;
-  font-size: 25px;
+  font-size: 20px;
 }
 
 .right-sidebar-icon{
-  height: 32px;
+  height: 26px;
 }
