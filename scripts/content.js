@@ -5,6 +5,7 @@ albumList.forEach((album) => {
 
   chainHTML += `
     <div class="music-preview">
+      <a href=""
         <div class="image""> 
           <div class="play-icon-button">
           <i class="fa fa-play play"></i>
