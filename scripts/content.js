@@ -5,13 +5,14 @@ albumList.forEach((album) => {
 
   chainHTML += `
     <div class="music-preview">
-      <a href=""
+      <a href="playlist.html">
         <div class="image""> 
           <div class="play-icon-button">
           <i class="fa fa-play play"></i>
           </div>
           <img src="${album.image}" class="image-display"> 
         </div>
+      </a>
 
         <div class="music-stats">
           <p class="name">
@@ -31,4 +32,3 @@ albumList.forEach((album) => {
   `
   chainId.innerHTML = chainHTML;
 })
-
