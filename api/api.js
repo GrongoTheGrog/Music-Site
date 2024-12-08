@@ -1,8 +1,8 @@
 const url = 'https://api.jamendo.com/v3.0/albums/?client_id=1797a491&namesearch=jazz&limit=14';
 
-export async function fetchData() {
+export async function fetchData(limit) {
   try{
-    const response = (await fetch(url));
+    const response = (await fetch(`https://api.jamendo.com/v3.0/albums/?client_id=1797a491&namesearch=jazz&limit=${limit}`));
 
     if (!response.ok){
       throw new Error(`HTTP error, status: ${response.status}`);
@@ -18,27 +18,3 @@ export async function fetchData() {
   }
 }
 
-async function display(){
-  const data = await fetchData();
-  const albums = data.results;
-
-  let inner = ``;
-
-  for(let i = 0; i < 14; i++){
-
-    inner += `
-    <div>
-      <img src="${albums[i].image}" class="image">
-      
-      <p>
-        Name: ${albums[i].name}
-      </p>
-    </div>
-    ` 
-  }
-
-  const element = document.getElementById('div1');
-  element.innerHTML = inner;
-}
-
-display();

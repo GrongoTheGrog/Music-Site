@@ -10,6 +10,7 @@ body{
   padding-right: 50px;
   transition: padding 0.3s;
   background-color: rgb(64, 63, 76);
+  padding-bottom: 100px;
 }
 
 .body-hide-left-sidebar{

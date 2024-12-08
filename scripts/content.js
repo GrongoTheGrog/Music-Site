@@ -1,10 +1,10 @@
-async function fetchData(param) {
+async function fetchData(param, limit) {
   try{
     let response;
     if (!param){
       response = (await fetch('https://api.jamendo.com/v3.0/albums/?client_id=1797a491&namesearch=jazz&limit=14'));
     }else{
-      response = (await fetch(`https://api.jamendo.com/v3.0/albums/?client_id=1797a491&namesearch=${param}&limit=14`));
+      response = (await fetch(`https://api.jamendo.com/v3.0/albums/?client_id=1797a491&namesearch=${param}&limit=${limit}`));
       
     }
     if (!response.ok){
@@ -24,18 +24,17 @@ async function fetchData(param) {
 
 const chainId = document.querySelector('.music-chain');
 
-async function display(a) {
+async function displayMain(search, limit) {
 
   let chainHTML = ``;
   try{
-    const data = await fetchData(a);
+    const data = await fetchData(search, limit);
     const albums = data.results;
-    console.log('hi')
 
-    for (let i = 0; i < Math.min(14, albums.length); i++){
+    for (let i = 0; i < albums.length; i++){
       chainHTML += `
       <div class="music-preview">
-        <a href="playlist.html">
+        <a href="playlist.html?id=${albums[i].id}" data-id="${albums[i].id} class="link-to-playlist">
           <div class="image""> 
             <div class="play-icon-button">
             <i class="fa fa-play play"></i>
@@ -66,7 +65,7 @@ async function display(a) {
   }
 } 
 
-display();
+displayMain('jazz', 21);
 
 const input = document.querySelector('.input-center');
 const button = document.querySelector('.button-search-header');
@@ -74,7 +73,22 @@ const button = document.querySelector('.button-search-header');
 button.addEventListener('click', () => {
   const value = input.value;
 
-  display(value);
+  displayMain(value, 21);
 
+})
+
+input.addEventListener('keydown', (event) => {
+  if (document.activeElement === input && event.key === 'Enter'){
+    const value = input.value;
+
+    displayMain(value, 21);
+  }
+})
+
+document.querySelectorAll(".link-to-playlist").forEach(element => {
+  element.addEventListener('click', () => {
+    const id = element.dataset.id;
+    console.log('hi');
+  })
 })
 
