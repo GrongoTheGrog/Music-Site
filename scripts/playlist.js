@@ -1,4 +1,4 @@
-import { playPlaylist, updateButtonHeader } from "../utils/play.js";
+import { playPlaylist } from "../utils/play.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get('id'); 
@@ -51,7 +51,7 @@ async function displayPlaylist() {
         <div>${musicArray[i].name}</div>
         <div>${artistName}</div>
         <div>${transformToMinutes(musicArray[i].duration)}</div>
-        <button class="button-play-single" data-music-url="${musicArray[i].audio}">
+        <button id="${musicArray[0]}" class="button-play-single" data-music-url="${musicArray[i].audio}">
           <img src="icons/play_arrow_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg" class="img-button-play-single" data-toggle=false"">
         </button>
       </div>
@@ -118,7 +118,6 @@ async function displayPlaylist() {
   musicListElement.innerHTML += htmlMusics;
 
   playPlaylist();
-  updateButtonHeader();
   
 }
 
