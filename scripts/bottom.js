@@ -8,3 +8,4 @@ document.querySelector('.js-button-queue').addEventListener('click', () => {
     toggleQueueButton ? queueBar.add(classHideQueue) : queueBar.remove(classHideQueue);
 
 })
+

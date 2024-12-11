@@ -1,37 +1,17 @@
-import { playPlaylist } from "../utils/play.js";
+import { playPlaylist, updateBarWidth } from "./utils/play.js";
+import fetchDataPlaylist from "./fetchdata/fetchDataPlaylistPage.js";
+import transformToMinutes from "./utils/transformToMinutes.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get('id'); 
 
+let audioVolume = 100;
 
-function transformToMinutes(a){
-  const minutes = Math.trunc(a / 60);
-  const seconds = a % 60;
-
-  return minutes ? `${minutes} min ${seconds} s` : `${seconds} s`;
-}
-
-async function fetchData(){
-  try{
-      const response = await fetch(`https://api.jamendo.com/v3.0/albums/tracks?client_id=1797a491&id=${id}`)
-
-      if (!response.ok){
-        throw new Error('HTTP Error: ', response.status);
-  
-      }else{
-        const data = await response.json();
-        console.log(data);
-        return data;
-      }
-  }catch(error){
-    console.error(error);
-  }
-}
 
 let html = ``;
 
 async function displayPlaylist() {
-  let data = await fetchData();
+  let data = await fetchDataPlaylist(id);
 
   const musicArray = data.results[0].tracks;
   data = data.results[0];
@@ -121,4 +101,8 @@ async function displayPlaylist() {
   
 }
 
+  
+
 displayPlaylist();
+
+

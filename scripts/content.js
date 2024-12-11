@@ -1,26 +1,4 @@
-async function fetchData(param, limit) {
-  try{
-    let response;
-    if (!param){
-      response = (await fetch('https://api.jamendo.com/v3.0/albums/?client_id=1797a491&namesearch=jazz&limit=14'));
-    }else{
-      response = (await fetch(`https://api.jamendo.com/v3.0/albums/?client_id=1797a491&namesearch=${param}&limit=${limit}`));
-      
-    }
-    if (!response.ok){
-      throw new Error(`HTTP error, status: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    console.log(data);
-    
-    return data;
-  } catch(error){
-    console.error(error);
-  }
-}
-
+import { fetchData } from "./fetchdata/fetchDataMainPage.js";
 
 const chainId = document.querySelector('.music-chain');
 
@@ -43,20 +21,20 @@ async function displayMain(search, limit) {
           </div>
         </a>
 
-          <div class="music-stats">
-            <p class="name">
-              ${albums[i].name}
-            </p>
+        <div class="music-stats">
+          <p class="name">
+            ${albums[i].name}
+          </p>
 
-            <p class="type">
-              Album
-            </p>
+          <p class="type">
+            Album
+          </p>
 
-            <p class="band">
-              ${albums[i].artist_name}
-            </p>
-          </div>
+          <p class="band">
+            ${albums[i].artist_name}
+          </p>
         </div>
+      </div>
         `
     }
     chainId.innerHTML = chainHTML;

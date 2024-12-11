@@ -86,3 +86,50 @@ function toggleButton(imagelist){
 })
 }
 
+
+
+const barContainer = document.querySelector('.bar-volume-container');
+const bar = document.querySelector('.bar-volume');
+
+export function updateBarWidth(audio) {
+  const containerRect = barContainer.getBoundingClientRect(); // Get container size
+  const mousex = event.clientX - containerRect.left;
+  let porcentage = mousex / containerRect.width * 100;
+  audio.volume = porcentage / 100;
+
+  console.log(porcentage);
+  console.log
+
+  porcentage = Math.max(0, Math.min(porcentage, 100));
+
+
+
+  const img = document.querySelector('.img-volume');
+
+  if (porcentage <= 0){
+    img.setAttribute('src', '/icons/volume_off_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg')
+  }else{
+    img.setAttribute('src', '/icons/volume_up_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg')
+  }
+
+  document.querySelector('.bar-volume').style.width = `${porcentage}%`;
+}
+
+let update = false
+
+barContainer.addEventListener('mousedown', (event) => {
+  updateBarWidth(currentMusic)
+
+  function move(){
+    updateBarWidth(currentMusic);
+  }
+
+  document.addEventListener('mousemove', move);
+
+  function stop(){
+    document.removeEventListener('mouseup', stop);
+    document.removeEventListener('mousemove', move);
+  }
+
+  document.addEventListener('mouseup', stop);
+});
