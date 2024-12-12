@@ -19,6 +19,7 @@ async function displayPlaylist() {
   const artistName = data.artist_name;
   const albumName = data.name;
   const date = data.releasedate;
+  
 
   let totalDuration = 0;
 
@@ -31,7 +32,7 @@ async function displayPlaylist() {
         <div>${musicArray[i].name}</div>
         <div>${artistName}</div>
         <div>${transformToMinutes(musicArray[i].duration)}</div>
-        <button id="${musicArray[0]}" class="button-play-single" data-music-url="${musicArray[i].audio}">
+        <button id="${musicArray[0]}" class="button-play-single" data-music-url="${musicArray[i].audio}" data-index-music="${i}">
           <img src="icons/play_arrow_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg" class="img-button-play-single" data-toggle=false"">
         </button>
       </div>
@@ -100,6 +101,7 @@ async function displayPlaylist() {
   playPlaylist();
   
 }
+
 
   
 

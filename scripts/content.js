@@ -43,7 +43,12 @@ async function displayMain(search, limit) {
   }
 } 
 
-displayMain('jazz', 21);
+const homeThemes = ['rock', 'jazz', 'pop', 'rap', 'trap', 'blues', 'eletronic', 'country', 'funk'];
+
+const indexThemes = Math.floor(Math.random() * homeThemes.length);
+const theme = homeThemes[indexThemes];
+
+displayMain(theme , 21);
 
 const input = document.querySelector('.input-center');
 const button = document.querySelector('.button-search-header');
