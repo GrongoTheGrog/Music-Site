@@ -69,10 +69,11 @@ export async function playPlaylist(){
       const button = document.querySelectorAll('.button-play-single')[0];
       currentMusic = new Audio(button.dataset.musicUrl)
       index = 0;
+      displayMusicProgress();
       addToImageList(button.children[0])
+      endMusic();
     }
     toggleButton(imagelist);
-    endMusic();
   })
 
 
@@ -96,8 +97,8 @@ export async function playPlaylist(){
   document.querySelector('.button-previous').addEventListener('click', () => {
     if (index > 0){       
 
-      change(-1);
       endMusic();
+      change(-1);
     }
   })
 
@@ -105,33 +106,36 @@ export async function playPlaylist(){
   document.querySelector('.button-next').addEventListener('click', () => {
     if (index < musicArray.length - 1){       
 
-      change(1);
       endMusic();
+      change(1);
     }
   })
 }
 
-function endMusic(){
-  currentMusic.addEventListener('ended', () => {
-    index++;
-    const musicUrl = musicArray[index];
-    toggle = true;
-    image.setAttribute('src', '/icons/play_arrow_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg');
-    playMusic(musicUrl);
 
-    refreshImageList();
-    addToImageList();
-  })
+//CHANGE WHEN END
+function handleEnd(){
+  change(1);
 }
 
+function endMusic(){
+  currentMusic.removeEventListener('ended', () => handleEnd())
+  currentMusic.addEventListener('ended', () => handleEnd())
+}
+
+//PLAY AND UPDATE THE CURRENT MUSIC WITH THE VOLUME
 function playMusic(musicUrl){
   currentMusic = new Audio(musicUrl);
   currentMusic.play();
   currentMusic.volume = porcentage / 100;
+  displayMusicProgress();
 }
 
+
+//CHANGE THE INDEX OF THE MUSIC IN THE musicArray
 function change(x){
   refreshImageList();
+  currentMusic.removeEventListener('ended', () => handleEnd())
 
   let curImage = musicButtonPlay[index].children[4].children[0];
   curImage.setAttribute('src', '/icons/play_arrow_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg');
@@ -141,6 +145,7 @@ function change(x){
   currentMusic.pause()
   playMusic(musicArray[index].audio)
   renderMusicQueue(index);
+  endMusic();
 
   toggle = true;
 
@@ -149,7 +154,7 @@ function change(x){
   toggleButton(imagelist);
 }
 
-
+//TOGGLE BUTTON PLAY
 function toggleButton(imagelist){
   if (currentMusic){
     toggle ? currentMusic.play() : currentMusic.pause();
@@ -165,6 +170,7 @@ function toggleButton(imagelist){
 })
 }
 
+//ADD IMAGE TO LIST FOR DISPLAY
 function addToImageList(imageAdd){
   imageAdd = imageAdd || musicButtonPlay[index].children[4].children[0];
 
@@ -179,7 +185,7 @@ function refreshImageList(){
   ];
 }
 
-
+//CHANGE THE SIZE AND VOLUME OF SOUND BAR 
 const barContainer = document.querySelector('.bar-volume-container');
 
 export function updateBarWidth(audio) {
@@ -205,6 +211,8 @@ export function updateBarWidth(audio) {
   document.querySelector('.bar-volume').style.width = `${porcentage}%`;
 }
 
+
+//ADD THE EVENT TO THE SOUND BAR 
 barContainer.addEventListener('mousedown', (event) => {
   updateBarWidth(currentMusic)
 
@@ -223,6 +231,8 @@ barContainer.addEventListener('mousedown', (event) => {
 });
 
 
+
+//GENERATE THE MUSIC QUEUE
 async function renderMusicQueue(index){
   const data = await fetchDataPlaylist(id);
   musicArray = data.results[0].tracks;
@@ -293,3 +303,21 @@ async function renderMusicQueue(index){
   
 }
 
+//KEEP TRACK OF CURRENT MUSIC PROGRESS
+function displayMusicProgress(){
+    currentMusic && currentMusic.addEventListener('timeupdate', () => {
+    const currentTimer = document.querySelector('.current-timer');
+    updateBarTimerrWidth(currentMusic.currentTime);
+
+    currentTimer.innerHTML = transformToMinutes((currentMusic.currentTime).toFixed());
+  })
+}
+
+//UPDATE BAR TIMER
+function updateBarTimerrWidth(currentTimer){
+  const duration = Number(musicArray[index].duration);
+  const currentProgress = currentTimer;
+  const elementBar = document.querySelector('.bar');
+  elementBar.style.width = `${currentProgress/duration * 100}%`;
+
+}

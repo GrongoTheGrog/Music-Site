@@ -16,6 +16,17 @@
 
 .bar{
   background-color: rgb(232, 228, 219);
+  width: 0%;
+  height: 100%;
+  align-self: center;
+  border: none;
+  border-radius: 3px;
+}
+
+.time-bar-back{
+  background-color: rgb(64, 63, 76);
+  display: flex;
+  justify-content: start;
   width: 400px;
   height: 6px;
   align-self: center;
