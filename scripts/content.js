@@ -12,7 +12,7 @@ async function displayMain(search, limit) {
     for (let i = 0; i < albums.length; i++){
       chainHTML += `
       <div class="music-preview">
-        <a href="playlist.html?id=${albums[i].id}" data-id="${albums[i].id} class="link-to-playlist">
+        <a href="playlist.html?id=${albums[i].id}" data-id="${albums[i].id}" class="link-to-playlist">
           <div class="image""> 
             <div class="play-icon-button">
             <i class="fa fa-play play"></i>
@@ -70,8 +70,6 @@ input.addEventListener('keydown', (event) => {
 
 document.querySelectorAll(".link-to-playlist").forEach(element => {
   element.addEventListener('click', () => {
-    const id = element.dataset.id;
-    console.log('hi');
   })
 })
 

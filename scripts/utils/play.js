@@ -7,53 +7,56 @@ let index = 0;
 let image;
 let porcentage = 50;
 let musicArray = []
+let musicButtonPlay = [];
+let imagelist;
+
 
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get('id'); 
 
 
+
 export async function playPlaylist(){
+  
+  const objectButtons = document.querySelector('.music-list').children;
+  musicButtonPlay = Array.from(objectButtons);
+  musicButtonPlay.splice(0, 1);
 
+  console.log(musicButtonPlay[0].children[4]);
 
-  let imagelist = [
-    document.getElementById('image-button-header-playlist-play'),
-    document.getElementById('play')
-  ];
+  refreshImageList();
 
-  document.querySelectorAll('.button-play-single').forEach((button) => {   /// FIRST WAY TO PAUSE
+  document.querySelectorAll('.button-play-single').forEach((button, indexFunction) => {   /// FIRST WAY TO PAUSE
+
+    
+
     button.addEventListener('click', () => {
-      index = Number(button.dataset.indexMusic) - 1;
-      console.log(index);
+      index = Number(button.dataset.indexMusic);
 
-      imagelist = [
-        document.getElementById('image-button-header-playlist-play'),
-        document.getElementById('play')
-      ];
+      refreshImageList();
       
 
       /// IF CURRENT MUSIC DOESNT EXIST, THEN THE CURRENT BUTTON MUSIC BECOMES THE CURRENT MUSIC
       if (!currentMusic || button.dataset.musicUrl !== currentMusic.src){
 
+        renderMusicQueue(index);
       /// IF IT ALREDY EXISTS
         if (currentMusic){
+          renderMusicQueue(index);
           currentMusic.pause();
           toggle = true;
           image.setAttribute('src', '/icons/play_arrow_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg');
 
         }
-
-
-        currentMusic = new Audio(button.dataset.musicUrl);
-        currentMusic.play();
-        currentMusic.volume = porcentage / 100;
-        renderMusicQueue(index);
+        
+        playMusic(button.dataset.musicUrl)
 
       }
 
-      image = button.children[0];
-      imagelist.push(image);
+      addToImageList(button.children[0])
 
       toggleButton(imagelist);
+      endMusic();
 
     })
   })
@@ -65,16 +68,18 @@ export async function playPlaylist(){
       renderMusicQueue(index);
       const button = document.querySelectorAll('.button-play-single')[0];
       currentMusic = new Audio(button.dataset.musicUrl)
-      index = Number(button.dataset.indexMusic) - 1;
-      imagelist.push(button.children[0]);
+      index = 0;
+      addToImageList(button.children[0])
     }
     toggleButton(imagelist);
+    endMusic();
   })
 
 
   ///THIRD WAY TO PAUSE //// BOTTOM BAR
   document.querySelector('.button-play').addEventListener('click', () => { 
     toggleButton(imagelist);
+    endMusic();
   })
 
 
@@ -83,19 +88,67 @@ export async function playPlaylist(){
     if (event.key === ' '){
       event.preventDefault();
       toggleButton(imagelist);
+      endMusic();
     }
   })  
 
   ///CHANGE TO PREVIOUS MUSIC IN THE MUSIC QUEUE 
   document.querySelector('.button-previous').addEventListener('click', () => {
-    if (index >= 0){       //only goes to the previous if the index of the current music is more or equal to 0
-      index--;
-      currentMusic = new Audio(musicArray[index].audio);
-      
+    if (index > 0){       
+
+      change(-1);
+      endMusic();
     }
   })
 
+  //CHANGE TO NEXT MUSIC IN THE MUSIC QUEUE
+  document.querySelector('.button-next').addEventListener('click', () => {
+    if (index < musicArray.length - 1){       
+
+      change(1);
+      endMusic();
+    }
+  })
 }
+
+function endMusic(){
+  currentMusic.addEventListener('ended', () => {
+    index++;
+    const musicUrl = musicArray[index];
+    toggle = true;
+    image.setAttribute('src', '/icons/play_arrow_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg');
+    playMusic(musicUrl);
+
+    refreshImageList();
+    addToImageList();
+  })
+}
+
+function playMusic(musicUrl){
+  currentMusic = new Audio(musicUrl);
+  currentMusic.play();
+  currentMusic.volume = porcentage / 100;
+}
+
+function change(x){
+  refreshImageList();
+
+  let curImage = musicButtonPlay[index].children[4].children[0];
+  curImage.setAttribute('src', '/icons/play_arrow_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg');
+
+  index += x;
+
+  currentMusic.pause()
+  playMusic(musicArray[index].audio)
+  renderMusicQueue(index);
+
+  toggle = true;
+
+  addToImageList()
+
+  toggleButton(imagelist);
+}
+
 
 function toggleButton(imagelist){
   if (currentMusic){
@@ -112,10 +165,22 @@ function toggleButton(imagelist){
 })
 }
 
+function addToImageList(imageAdd){
+  imageAdd = imageAdd || musicButtonPlay[index].children[4].children[0];
+
+  image = imageAdd;
+  imagelist.push(image);
+}
+
+function refreshImageList(){
+  imagelist = [
+    document.getElementById('image-button-header-playlist-play'),
+    document.getElementById('play')
+  ];
+}
 
 
 const barContainer = document.querySelector('.bar-volume-container');
-const bar = document.querySelector('.bar-volume');
 
 export function updateBarWidth(audio) {
   const containerRect = barContainer.getBoundingClientRect(); // Get container size
@@ -162,6 +227,7 @@ async function renderMusicQueue(index){
   const data = await fetchDataPlaylist(id);
   musicArray = data.results[0].tracks;
   const image = data.results[0].image;
+  console.log(`This is the index: ${index}`)
 
 
 
@@ -202,7 +268,6 @@ async function renderMusicQueue(index){
 
   for(let i = 1; i < musicArray.length - index; i++){
     const current = index + i;
-    console.log(current);
     html += `
       <div class="queue-div" id="nextContainer"> <!-- NEXT2 -->
         <img src="${image}" alt="a day at the races" class="album-img-music-queue">
