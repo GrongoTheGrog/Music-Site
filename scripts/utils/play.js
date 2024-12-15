@@ -10,6 +10,10 @@ let musicArray = []
 let musicButtonPlay = [];
 let imagelist;
 
+let defaultMusicButtonPlay;
+
+let curImage;
+
 
 let toggleShuffle;
 let toggleLoop;
@@ -28,12 +32,20 @@ export async function playPlaylist(){
   musicButtonPlay = Array.from(objectButtons);
   musicButtonPlay.splice(0, 1);
 
-  musicButtonPlay = musicButtonPlay.map((button) => {
-    return [button.children[4].children[0], musicArray[index]];
+  let add = -1;
+  musicButtonPlay = musicButtonPlay.map((button, i) => {
+    add++;
+    return [button.children[4].children[0], musicArray[add]];
   })
 
-  console.log(musicButtonPlay);
-  console.log(musicArray);
+  musicButtonPlay.sort((a, b) => a[1].position - b[1].position)
+
+  defaultMusicButtonPlay = [...musicButtonPlay];
+
+  if (toggleShuffle){
+    musicButtonPlay.sort(() => Math.random() - 0.5);
+  }
+
 
   refreshImageList();
 
@@ -151,8 +163,10 @@ function change(x){
   refreshImageList();
   currentMusic.removeEventListener('ended', () => handleEnd())
 
-  let curImage = musicButtonPlay[index][0];
-  curImage.setAttribute('src', '/icons/play_arrow_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg');
+
+  curImage = musicButtonPlay[index][0];
+  image.setAttribute('src', '/icons/play_arrow_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg');
+  
 
   index += x;
   if (toggleLoop){
@@ -161,7 +175,6 @@ function change(x){
     }
     toggleLoopFunction()
   }
-
 
   currentMusic.pause()
   playMusic(musicButtonPlay[index][1].audio)
@@ -257,7 +270,6 @@ barContainer.addEventListener('mousedown', (event) => {
 async function renderMusicQueue(index){
   const data = await fetchDataPlaylist(id);
   const image = data.results[0].image;
-  console.log(`This is the index: ${index}`)
 
 
 
@@ -268,7 +280,7 @@ async function renderMusicQueue(index){
       <img src="image-album/sapo copy.jpg" alt="profile pic" class="img-profile-queue">
 
       <div class="flex-text-queue-header">
-        <div class="text-queue-header">Music Queue &#119070;</div>
+        <div class="text-queue-header">Music Queue</div>
       </div>
     </div>
 
@@ -281,7 +293,7 @@ async function renderMusicQueue(index){
 
       <div class="queue-text">
         <div class="queue-music-name text-queue-header">
-          ${musicArray[index].name}
+          ${musicButtonPlay[index][1].name}
         </div>
 
         <div class="queue-album-name text-queue-header">
@@ -304,7 +316,7 @@ async function renderMusicQueue(index){
 
         <div class="queue-text">
           <div class="queue-music-name text-queue-header">
-            ${musicArray[current].name}
+            ${musicButtonPlay[current][1].name}
           </div>
 
           <div class="queue-album-name text-queue-header">
@@ -359,7 +371,7 @@ function updateBarTimerrWidth(currentTimer){
 
   })
 
-  const duration = Number(musicArray[index].duration);
+  const duration = Number(musicButtonPlay[index][1].duration);
   const currentProgress = currentTimer;
   const elementBar = document.querySelector('.bar');
   elementBar.style.width = `${currentProgress/duration * 100}%`;
@@ -370,7 +382,7 @@ function updateBarTimerWidthMouse(event){
   const mousex = event.clientX;
   const barSizeAfter = mousex - barLeftLocation.left;
   const porcentage = barSizeAfter / barLeftLocation.width;
-  const duration = porcentage * 100 * currentMusic.duration / 100;
+  const duration = porcentage * currentMusic.duration
   currentMusic.currentTime = duration;
  
   document.querySelector('.bar').style.width = `${porcentage * 100}%`;
@@ -381,6 +393,8 @@ document.querySelector('.button-loop').addEventListener('click', () => {
   toggleLoopFunction();
 })
 
+
+//TOGGLE THE LOOP
 function toggleLoopFunction(){
   const marker = document.querySelector('.marker-loop');
   toggleLoop = !toggleLoop;
@@ -396,12 +410,20 @@ document.querySelector('.button-shuffle').addEventListener('click', () => {
   toggleShuffleFunction();
 })
 
+//TOGGLE THE SHUFFLE
 function toggleShuffleFunction(){
   const marker = document.querySelector('.marker-shuffle');
   toggleShuffle = !toggleShuffle;
   if (toggleShuffle){
     marker.style.display = 'flex';
+    musicButtonPlay.sort(() => Math.random() - 0.5)
+    console.log(musicButtonPlay);
+    renderMusicQueue(index);
   }else{
     marker.style.display = 'none';
+    index = musicButtonPlay[index][1].position - 1;
+    musicButtonPlay = defaultMusicButtonPlay;
+    console.log(musicButtonPlay);
+    renderMusicQueue(index)
   }
 }

@@ -19,6 +19,9 @@ async function displayPlaylist() {
   const artistName = data.artist_name;
   const albumName = data.name;
   const date = data.releasedate;
+
+  musicArray.sort((a, b) => a.position - b.position);
+  console.log(musicArray)
   
 
   let totalDuration = 0;
@@ -41,7 +44,6 @@ async function displayPlaylist() {
 
   }
 
-  console.log(totalDuration)
 
   
   html += `                
