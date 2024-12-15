@@ -127,3 +127,39 @@
   pointer-events: none;
 }
 
+.button-loop{
+  position: relative;
+}
+
+.marker-loop{
+  position: absolute;
+  height: 8px;
+  width: 8px;
+  background-color: green;
+  border-radius: 4px;
+  top: 0;
+  right: 0px;
+
+  display: none;
+
+  z-index: 100;
+}
+
+
+.button-shuffle{
+  position: relative;
+}
+
+.marker-shuffle{
+  position: absolute;
+  height: 8px;
+  width: 8px;
+  background-color: green;
+  border-radius: 4px;
+  top: 0;
+  right: 0px;
+
+  display: none;
+
+  z-index: 100;
+}

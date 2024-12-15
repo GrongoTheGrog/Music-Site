@@ -11,18 +11,29 @@ let musicButtonPlay = [];
 let imagelist;
 
 
+let toggleShuffle;
+let toggleLoop;
+
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get('id'); 
 
 
 
 export async function playPlaylist(){
+
+  const data = await fetchDataPlaylist(id);
+  musicArray = data.results[0].tracks;
   
   const objectButtons = document.querySelector('.music-list').children;
   musicButtonPlay = Array.from(objectButtons);
   musicButtonPlay.splice(0, 1);
 
-  console.log(musicButtonPlay[0].children[4]);
+  musicButtonPlay = musicButtonPlay.map((button) => {
+    return [button.children[4].children[0], musicArray[index]];
+  })
+
+  console.log(musicButtonPlay);
+  console.log(musicArray);
 
   refreshImageList();
 
@@ -57,6 +68,9 @@ export async function playPlaylist(){
 
       toggleButton(imagelist);
       endMusic();
+      if (toggleLoop){
+        toggleLoopFunction();
+      }
 
     })
   })
@@ -104,7 +118,7 @@ export async function playPlaylist(){
 
   //CHANGE TO NEXT MUSIC IN THE MUSIC QUEUE
   document.querySelector('.button-next').addEventListener('click', () => {
-    if (index < musicArray.length - 1){       
+    if (index < musicButtonPlay.length - 1){       
 
       endMusic();
       change(1);
@@ -137,13 +151,20 @@ function change(x){
   refreshImageList();
   currentMusic.removeEventListener('ended', () => handleEnd())
 
-  let curImage = musicButtonPlay[index].children[4].children[0];
+  let curImage = musicButtonPlay[index][0];
   curImage.setAttribute('src', '/icons/play_arrow_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg');
 
   index += x;
+  if (toggleLoop){
+    if (x === 1){
+      index--;
+    }
+    toggleLoopFunction()
+  }
+
 
   currentMusic.pause()
-  playMusic(musicArray[index].audio)
+  playMusic(musicButtonPlay[index][1].audio)
   renderMusicQueue(index);
   endMusic();
 
@@ -172,7 +193,7 @@ function toggleButton(imagelist){
 
 //ADD IMAGE TO LIST FOR DISPLAY
 function addToImageList(imageAdd){
-  imageAdd = imageAdd || musicButtonPlay[index].children[4].children[0];
+  imageAdd = imageAdd || musicButtonPlay[index][0];
 
   image = imageAdd;
   imagelist.push(image);
@@ -235,7 +256,6 @@ barContainer.addEventListener('mousedown', (event) => {
 //GENERATE THE MUSIC QUEUE
 async function renderMusicQueue(index){
   const data = await fetchDataPlaylist(id);
-  musicArray = data.results[0].tracks;
   const image = data.results[0].image;
   console.log(`This is the index: ${index}`)
 
@@ -309,15 +329,79 @@ function displayMusicProgress(){
     const currentTimer = document.querySelector('.current-timer');
     updateBarTimerrWidth(currentMusic.currentTime);
 
-    currentTimer.innerHTML = transformToMinutes((currentMusic.currentTime).toFixed());
+    currentTimer.innerHTML = transformToMinutes(Math.trunc(currentMusic.currentTime));
   })
 }
 
 //UPDATE BAR TIMER
 function updateBarTimerrWidth(currentTimer){
+  const bar = document.querySelector('.time-bar-back');
+
+  bar.addEventListener('mousedown', (event) => {
+    handleStretch(event);
+    currentMusic.pause();
+
+    function handleStretch(eventMove){
+      updateBarTimerWidthMouse(eventMove);
+    }
+
+    document.addEventListener('mousemove',  handleStretch)
+
+    function stop(){
+      document.removeEventListener('mouseup', stop);
+      document.removeEventListener('mousemove', handleStretch);
+      toggle = true;
+      toggleButton(imagelist);
+
+    }
+
+    document.addEventListener('mouseup', stop)
+
+  })
+
   const duration = Number(musicArray[index].duration);
   const currentProgress = currentTimer;
   const elementBar = document.querySelector('.bar');
   elementBar.style.width = `${currentProgress/duration * 100}%`;
+}
 
+function updateBarTimerWidthMouse(event){
+  const barLeftLocation = document.querySelector('.time-bar-back').getBoundingClientRect();
+  const mousex = event.clientX;
+  const barSizeAfter = mousex - barLeftLocation.left;
+  const porcentage = barSizeAfter / barLeftLocation.width;
+  const duration = porcentage * 100 * currentMusic.duration / 100;
+  currentMusic.currentTime = duration;
+ 
+  document.querySelector('.bar').style.width = `${porcentage * 100}%`;
+
+}
+
+document.querySelector('.button-loop').addEventListener('click', () => {
+  toggleLoopFunction();
+})
+
+function toggleLoopFunction(){
+  const marker = document.querySelector('.marker-loop');
+  toggleLoop = !toggleLoop;
+  if (toggleLoop){
+    marker.style.display = 'flex';
+  }else{
+    marker.style.display = 'none';
+  }
+}
+
+
+document.querySelector('.button-shuffle').addEventListener('click', () => {
+  toggleShuffleFunction();
+})
+
+function toggleShuffleFunction(){
+  const marker = document.querySelector('.marker-shuffle');
+  toggleShuffle = !toggleShuffle;
+  if (toggleShuffle){
+    marker.style.display = 'flex';
+  }else{
+    marker.style.display = 'none';
+  }
 }
