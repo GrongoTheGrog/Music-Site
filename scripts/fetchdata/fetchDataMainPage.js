@@ -1,10 +1,11 @@
-export async function fetchData(param, limit) {
+export async function fetchData(param, limit, type) {
   try{
+    console.log(type)
     let response;
     if (!param){
-      response = (await fetch('https://api.jamendo.com/v3.0/albums/?client_id=1797a491&namesearch=jazz&limit=14'));
+      response = (await fetch(`https://api.jamendo.com/v3.0/${type}/?client_id=1797a491&namesearch=jazz&limit=14`));
     }else{
-      response = (await fetch(`https://api.jamendo.com/v3.0/albums/?client_id=1797a491&namesearch=${param}&limit=${limit}`));
+      response = (await fetch(`https://api.jamendo.com/v3.0/${type}/?client_id=1797a491&namesearch=${param}&limit=${limit}`));
       
     }
     if (!response.ok){
@@ -17,5 +18,4 @@ export async function fetchData(param, limit) {
     console.error(error);
   }
 }
-
 

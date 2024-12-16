@@ -1,6 +1,9 @@
 import { playPlaylist, updateBarWidth } from "./utils/play.js";
 import fetchDataPlaylist from "./fetchdata/fetchDataPlaylistPage.js";
 import transformToMinutes from "./utils/transformToMinutes.js";
+import toggleSearchOptions from "./utils/toggleSearchOption.js";
+
+toggleSearchOptions();
 
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get('id'); 
@@ -104,8 +107,20 @@ async function displayPlaylist() {
   
 }
 
+const input = document.querySelector('.input-center');
+const button = document.querySelector('.button-search-header');
 
-  
+button.addEventListener('click', () => {
+  window.location.href = `../images.html?search=${input.value}`;
+   sessionStorage.setItem('search', input.value)
+})
+
+input.addEventListener('keydown', (event) => {
+  if (document.activeElement === input && event.key === 'Enter'){
+     window.location.href = "../images.html";
+     sessionStorage.setItem('search', input.value);
+  }
+})
 
 displayPlaylist();
 

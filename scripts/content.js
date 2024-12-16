@@ -1,12 +1,15 @@
 import { fetchData } from "./fetchdata/fetchDataMainPage.js";
+import toggleSearchOptions from "./utils/toggleSearchOption.js";
 
+
+toggleSearchOptions()
 const chainId = document.querySelector('.music-chain');
 
-async function displayMain(search, limit) {
+async function displayMainAlbums(search, limit, type) {
 
   let chainHTML = ``;
   try{
-    const data = await fetchData(search, limit);
+    const data = await fetchData(search, limit, type);
     const albums = data.results;
 
     for (let i = 0; i < albums.length; i++){
@@ -43,28 +46,40 @@ async function displayMain(search, limit) {
   }
 } 
 
-const homeThemes = ['rock', 'jazz', 'pop', 'rap', 'trap', 'blues', 'eletronic', 'country', 'funk'];
+
+
+let homeThemes =  sessionStorage.getItem('search') || ['rock', 'jazz', 'pop', 'rap', 'trap', 'blues', 'eletronic', 'country', 'funk'];
+sessionStorage.removeItem('search');
+console.log(homeThemes);
 
 const indexThemes = Math.floor(Math.random() * homeThemes.length);
-const theme = homeThemes[indexThemes];
 
-displayMain(theme , 21);
+if (Array.isArray(homeThemes)){
+  homeThemes = homeThemes[indexThemes];
+}
+
+const type = getTypeOfSearch();
+
+displayMainAlbums(homeThemes , 21, type);
 
 const input = document.querySelector('.input-center');
 const button = document.querySelector('.button-search-header');
 
 button.addEventListener('click', () => {
   const value = input.value;
+  const type = getTypeOfSearch();
 
-  displayMain(value, 21);
+
+  displayMainAlbums(value, 21, type);
 
 })
 
 input.addEventListener('keydown', (event) => {
   if (document.activeElement === input && event.key === 'Enter'){
     const value = input.value;
+    const type = getTypeOfSearch();
 
-    displayMain(value, 21);
+    displayMainAlbums(value, 21, type);
   }
 })
 
@@ -73,3 +88,8 @@ document.querySelectorAll(".link-to-playlist").forEach(element => {
   })
 })
 
+function getTypeOfSearch(){
+  console.log(document.querySelector('.current-search').dataset.value)
+  return document.querySelector('.current-search').dataset.value;
+  
+}
