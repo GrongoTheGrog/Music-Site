@@ -5,8 +5,47 @@ import toggleSearchOptions from "./utils/toggleSearchOption.js";
 toggleSearchOptions()
 const chainId = document.querySelector('.music-chain');
 
-async function displayMainAlbums(search, limit, type) {
 
+
+async function displayMainArtits(search, limit, type) {
+  document.querySelector('.title-above-chain').textContent = 'Artists'
+
+  let chainHTML = ``;
+  try{
+    const data = await fetchData(search, limit, type);
+    const artists = data.results;
+
+    for (let i = 0; i < artists.length; i++){
+      chainHTML += `
+      <div class="artist-card">
+        <img class="image-artist" src="${artists[i].image}">
+
+        <div class="artist-text">
+          <span class="artistName">
+            ${artists[i].name}
+          </span>
+
+          <span class="enteringDate">
+            ${artists[i].joindate} 
+          </span>
+        </div>
+      </div>
+
+        `
+    }
+    chainId.innerHTML = chainHTML;
+  } catch (error){
+    console.error('Error in display: ', error)
+  }
+}
+
+
+
+
+
+
+async function displayMainAlbums(search, limit, type) {
+  document.querySelector('.title-above-chain').textContent = 'Albums'
   let chainHTML = ``;
   try{
     const data = await fetchData(search, limit, type);
@@ -70,7 +109,7 @@ button.addEventListener('click', () => {
   const type = getTypeOfSearch();
 
 
-  displayMainAlbums(value, 21, type);
+  decideSearch(value, 21, type)
 
 })
 
@@ -79,7 +118,7 @@ input.addEventListener('keydown', (event) => {
     const value = input.value;
     const type = getTypeOfSearch();
 
-    displayMainAlbums(value, 21, type);
+    decideSearch(value, 21, type);
   }
 })
 
@@ -92,4 +131,14 @@ function getTypeOfSearch(){
   console.log(document.querySelector('.current-search').dataset.value)
   return document.querySelector('.current-search').dataset.value;
   
+}
+
+function decideSearch(value, limit, type){
+  type = getTypeOfSearch();
+
+  if (type === 'albums'){
+    displayMainAlbums(value, limit, type);
+  }else if (type === 'artists'){
+    displayMainArtits(value, limit, type);
+  }
 }
