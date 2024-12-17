@@ -13,6 +13,7 @@ export async function fetchData(param, limit, type) {
     }
 
     const data = await response.json();
+    console.log(data)
     return await data;
   } catch(error){
     console.error(error);

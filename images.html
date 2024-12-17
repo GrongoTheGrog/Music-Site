@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="styles/left-sidebar.css">
     <link rel="stylesheet" href="styles/rigth-sidebar.css">
     <link rel="stylesheet" href="styles/queue.css">
+    <link rel="stylesheet" href="styles/playlist-display.css">
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=refresh" />
 
@@ -133,6 +134,76 @@
 
 
                               <!--- BOTTOM -->
+
+
+    
+
+  <div class="bottom"> 
+    <div class="left-bottom">
+      <button class="button-bottom js-button-queue">
+        <img src="icons/queue_music_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg" alt="music-queue" class="img-bottom">
+      </button>
+    </div>
+
+    <div class="middle-bottom">
+
+      <button class="button-bottom button-previous">
+        <img class="img-bottom img-previous-bottom" src="icons/skip_previous_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg">
+      </button>
+
+      <button class="button-bottom button-play">
+        <img class="img-bottom img-play-bottom" id="play" src="icons/play_arrow_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg">
+      </button>
+
+      <button class="button-bottom button-next">
+        <img class="img-bottom img-next-bottom" src="icons/skip_next_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24 (1).svg">
+      </button>
+
+      <div class="bar-container">
+        <div class="time-bar-back">
+          <div class="bar">
+            
+          </div>
+        </div>
+
+        <div class="timer-container">
+          <p class="current-timer timer" style="pointer-events: none;">
+            0 s
+          </p>
+
+          <p class="final-timer timer" style="pointer-events: none;">
+            0 s
+          </p>
+        </div>
+      </div>
+        
+      <button class="button-bottom button-shuffle">
+        <img class="img-bottom img-next-bottom" src="icons/shuffle_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg">
+
+        <div class="marker-shuffle"></div>
+      </button>
+
+      <button class="button-bottom button-loop">
+        <img class="img-bottom img-next-bottom" src="icons/repeat_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg">
+
+        <div class="marker-loop"></div>
+      </button>
+    </div>
+
+    <div class="right-bottom">
+      <img src="/icons/volume_up_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg" class="img-volume">
+
+      <div class="bar-volume-container" id="bar-volume-container">
+        <div class="back-bar-volume" id="bar-volume">
+          <div class="bar-volume"> 
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
     <script src="data/data-music.js"></script>
 

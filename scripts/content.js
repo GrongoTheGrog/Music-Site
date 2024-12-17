@@ -1,6 +1,8 @@
 import { fetchData } from "./fetchdata/fetchDataMainPage.js";
 import toggleSearchOptions from "./utils/toggleSearchOption.js";
+import { playAll } from "./utils/play.js";
 
+playAll();
 
 toggleSearchOptions()
 const chainId = document.querySelector('.music-chain');

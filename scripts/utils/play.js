@@ -1,9 +1,20 @@
 import fetchDataPlaylist from "../fetchdata/fetchDataPlaylistPage.js";
 import transformToMinutes from "./transformToMinutes.js";
 
+///
+
+let musicQueue;
 let currentMusic;
 let toggle = true;
 let index = 0;
+let toggleShuffle;
+let toggleLoop = false;
+let currentLoop = false;
+let mouseDown;
+
+
+////
+
 let image;
 let porcentage = 50;
 let musicArray = []
@@ -13,10 +24,6 @@ let imagelist;
 let defaultMusicButtonPlay;
 
 let curImage;
-
-
-let toggleShuffle;
-let toggleLoop;
 
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get('id'); 
@@ -188,22 +195,6 @@ function change(x){
   toggleButton(imagelist);
 }
 
-//TOGGLE BUTTON PLAY
-function toggleButton(imagelist){
-  if (currentMusic){
-    toggle ? currentMusic.play() : currentMusic.pause();
-  }
-  toggle = !toggle;
-
-
-  imagelist.forEach((image) => {
-    toggle ?
-      image.setAttribute('src', '/icons/play_arrow_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg')
-    :
-      image.setAttribute('src', '/icons/pause_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg')
-})
-}
-
 //ADD IMAGE TO LIST FOR DISPLAY
 function addToImageList(imageAdd){
   imageAdd = imageAdd || musicButtonPlay[index][0];
@@ -218,51 +209,6 @@ function refreshImageList(){
     document.getElementById('play')
   ];
 }
-
-//CHANGE THE SIZE AND VOLUME OF SOUND BAR 
-const barContainer = document.querySelector('.bar-volume-container');
-
-export function updateBarWidth(audio) {
-  const containerRect = barContainer.getBoundingClientRect(); // Get container size
-  const mousex = event.clientX - containerRect.left;
-  porcentage = mousex / containerRect.width * 100;
-
-
-  porcentage = Math.max(0, Math.min(porcentage, 100));
-
-
-
-  const img = document.querySelector('.img-volume');
-
-  if (porcentage <= 3){
-    porcentage = 0;
-    img.setAttribute('src', '/icons/volume_off_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg')
-  }else{
-    img.setAttribute('src', '/icons/volume_up_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg')
-  }
-
-  audio.volume = porcentage / 100;
-  document.querySelector('.bar-volume').style.width = `${porcentage}%`;
-}
-
-
-//ADD THE EVENT TO THE SOUND BAR 
-barContainer.addEventListener('mousedown', (event) => {
-  updateBarWidth(currentMusic)
-
-  function move(){
-    updateBarWidth(currentMusic);
-  }
-
-  document.addEventListener('mousemove', move);
-
-  function stop(){
-    document.removeEventListener('mouseup', stop);
-    document.removeEventListener('mousemove', move);
-  }
-
-  document.addEventListener('mouseup', stop);
-});
 
 
 
@@ -335,95 +281,244 @@ async function renderMusicQueue(index){
   
 }
 
-//KEEP TRACK OF CURRENT MUSIC PROGRESS
-function displayMusicProgress(){
-    currentMusic && currentMusic.addEventListener('timeupdate', () => {
-    const currentTimer = document.querySelector('.current-timer');
-    updateBarTimerrWidth(currentMusic.currentTime);
 
-    currentTimer.innerHTML = transformToMinutes(Math.trunc(currentMusic.currentTime));
-  })
-}
 
-//UPDATE BAR TIMER
-function updateBarTimerrWidth(currentTimer){
-  const bar = document.querySelector('.time-bar-back');
+//
 
-  bar.addEventListener('mousedown', (event) => {
-    handleStretch(event);
-    currentMusic.pause();
 
-    function handleStretch(eventMove){
-      updateBarTimerWidthMouse(eventMove);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export async function playAll(){
+  musicQueue = await fetchDataPlaylist('1910');
+  musicQueue = musicQueue.results[0].tracks;
+  const musicQueueDefault = [...musicQueue];
+  console.log(musicQueue);
+
+
+  function toggleButtonPlay(){
+    toggle = !toggle;
+
+    if (toggle){ /// changing the source and making it play
+      document.querySelector('.img-play-bottom').setAttribute('src', 'icons/play_arrow_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg')
+
+      currentMusic.pause()
+    }else{
+      document.querySelector('.img-play-bottom').setAttribute('src', 'icons/pause_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg');
+
+      currentMusic.play()
+      displayMusicProgress()
+      updateTimerDuration();
     }
 
-    document.addEventListener('mousemove',  handleStretch)
+  }
+
+  document.querySelector('.button-play').addEventListener('click', () => { 
+    toggleButtonPlay();
+  })
+
+  currentMusic = new Audio(musicQueue[index].audio); // always change the current
+
+
+  //play new music
+  function playTrack(){
+    currentMusic.pause();
+    currentMusic = new Audio(musicQueue[index].audio);
+    toggle = true;
+    console.log(index);
+    toggleButtonPlay()
+    displayMusicProgress()
+  }
+
+
+
+  // go previous
+  document.querySelector('.button-previous').addEventListener('click', () => {
+    if (index > 0){
+      index--;
+      if (currentLoop){
+        index++;
+        toggleLoopFunction();
+      }
+    }
+    playTrack()
+    updateTimerDuration();
+  })
+
+  // go next
+  document.querySelector('.button-next').addEventListener('click', () => {
+    if (index < musicQueue.length){
+      index++;
+      if (currentLoop){
+        index--;
+        toggleLoopFunction();
+      }
+    }
+    playTrack();
+    updateTimerDuration();
+  })
+
+
+
+//CHANGE THE SIZE AND VOLUME OF SOUND BAR 
+const barContainer = document.querySelector('.bar-volume-container');
+
+function updateBarWidth(audio) {
+  const containerRect = barContainer.getBoundingClientRect(); // Get container size
+  const mousex = event.clientX - containerRect.left;
+  porcentage = mousex / containerRect.width * 100;
+
+
+  porcentage = Math.max(0, Math.min(porcentage, 100));
+
+
+
+  const img = document.querySelector('.img-volume');
+
+  if (porcentage <= 3){
+    porcentage = 0;
+    img.setAttribute('src', '/icons/volume_off_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg')
+  }else{
+    img.setAttribute('src', '/icons/volume_up_24dp_E8E4DB_FILL1_wght400_GRAD0_opsz24.svg')
+  }
+
+  audio.volume = porcentage / 100;
+  document.querySelector('.bar-volume').style.width = `${porcentage}%`;
+}
+
+
+  //ADD THE EVENT TO THE SOUND BAR 
+  barContainer.addEventListener('mousedown', (event) => {
+    updateBarWidth(currentMusic)
+
+    function move(){
+      updateBarWidth(currentMusic);
+    }
+
+    document.addEventListener('mousemove', move);
 
     function stop(){
       document.removeEventListener('mouseup', stop);
-      document.removeEventListener('mousemove', handleStretch);
-      toggle = true;
-      toggleButton(imagelist);
-
+      document.removeEventListener('mousemove', move);
     }
 
-    document.addEventListener('mouseup', stop)
+    document.addEventListener('mouseup', stop);
+  });
 
+
+  document.querySelector('.button-loop').addEventListener('click', () => toggleLoopFunction())
+
+  //TOGGLE THE LOOP
+  function toggleLoopFunction(){
+    const marker = document.querySelector('.marker-loop');
+    toggleLoop = !toggleLoop;
+    if (toggleLoop) {
+      marker.style.display = 'flex'
+      currentLoop = true
+    }else{
+      marker.style.display = 'none';
+      currentLoop = false;
+    }
+    
+    
+    
+  }
+
+
+  document.querySelector('.button-shuffle').addEventListener('click', () => toggleShuffleFunction())
+
+  //TOGGLE THE SHUFFLE
+  function toggleShuffleFunction(){
+    const marker = document.querySelector('.marker-shuffle');
+    toggleShuffle = !toggleShuffle;
+    if (toggleShuffle){
+      marker.style.display = 'flex';
+      musicQueue.sort(() => Math.random() - 0.5)
+      console.log(musicQueue)
+    }else{
+      marker.style.display = 'none';
+      musicQueue = musicQueueDefault;
+      console.log(musicQueue);
+    }
+  }
+
+    
+  //KEEP TRACK OF CURRENT MUSIC PROGRESS
+  function displayMusicProgress(){
+    currentMusic.addEventListener('timeupdate', () => {
+      const currentTimer = document.querySelector('.current-timer');
+      updateBarTimerWidth(currentMusic.currentTime);
+
+      currentTimer.innerHTML = transformToMinutes(Math.trunc(currentMusic.currentTime));
+  })
+  }
+
+  //UPDATE BAR TIMER
+  function updateBarTimerWidth(currentTimer){
+  const bar = document.querySelector('.time-bar-back');
+
+  bar.addEventListener('mousedown', (event) => {
+    currentMusic.pause();
+    updateBarTimerWidthMouse(event);
+    mouseDown = true;
+  
+    function onMouseMove(){
+      if (mouseDown) {
+        updateBarTimerWidthMouse(event);
+      }
+    };
+
+    function onMouseUp(){
+      preventDefault;
+      if (mouseDown) {
+        currentMusic.play()
+        document.removeEventListener('mouseup', onMouseUp);
+        document.removeEventListener('mousemove', onMouseMove);
+        mouseDown = false;
+      }
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+    
   })
 
-  const duration = Number(musicButtonPlay[index][1].duration);
+  const duration = Number(musicQueue[index].duration);
   const currentProgress = currentTimer;
   const elementBar = document.querySelector('.bar');
   elementBar.style.width = `${currentProgress/duration * 100}%`;
-}
+  }
 
-function updateBarTimerWidthMouse(event){
+  function updateBarTimerWidthMouse(event){
   const barLeftLocation = document.querySelector('.time-bar-back').getBoundingClientRect();
   const mousex = event.clientX;
   const barSizeAfter = mousex - barLeftLocation.left;
   const porcentage = barSizeAfter / barLeftLocation.width;
   const duration = porcentage * currentMusic.duration
   currentMusic.currentTime = duration;
- 
+  console.log('hi')
+
   document.querySelector('.bar').style.width = `${porcentage * 100}%`;
 
-}
-
-document.querySelector('.button-loop').addEventListener('click', () => {
-  toggleLoopFunction();
-})
-
-
-//TOGGLE THE LOOP
-function toggleLoopFunction(){
-  const marker = document.querySelector('.marker-loop');
-  toggleLoop = !toggleLoop;
-  if (toggleLoop){
-    marker.style.display = 'flex';
-  }else{
-    marker.style.display = 'none';
   }
-}
 
+  function updateTimerDuration(){
+    const timer = document.querySelector('.final-timer');
 
-document.querySelector('.button-shuffle').addEventListener('click', () => {
-  toggleShuffleFunction();
-})
-
-//TOGGLE THE SHUFFLE
-function toggleShuffleFunction(){
-  const marker = document.querySelector('.marker-shuffle');
-  toggleShuffle = !toggleShuffle;
-  if (toggleShuffle){
-    marker.style.display = 'flex';
-    musicButtonPlay.sort(() => Math.random() - 0.5)
-    console.log(musicButtonPlay);
-    renderMusicQueue(index);
-  }else{
-    marker.style.display = 'none';
-    index = musicButtonPlay[index][1].position - 1;
-    musicButtonPlay = defaultMusicButtonPlay;
-    console.log(musicButtonPlay);
-    renderMusicQueue(index)
+    timer.textContent = transformToMinutes(musicQueue[index].duration);
   }
+
+
+
 }

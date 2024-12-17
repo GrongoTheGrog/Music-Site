@@ -13,7 +13,7 @@ let audioVolume = 100;
 
 let html = ``;
 
-async function displayPlaylist() {
+export async function displayPlaylist() {
   let data = await fetchDataPlaylist(id);
 
   const musicArray = data.results[0].tracks;
@@ -121,7 +121,3 @@ input.addEventListener('keydown', (event) => {
      sessionStorage.setItem('search', input.value);
   }
 })
-
-displayPlaylist();
-
-
