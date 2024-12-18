@@ -233,7 +233,7 @@ export async function playAll(){
   musicQueue = musicQueue.results;
   musicQueue.sort((a, b) => a.position - b.position);
   const musicQueueDefault = [...musicQueue];
-  console.log(musicQueue);
+  console.log(musicQueueDefault);
 
 
   function toggleButtonPlay(){
@@ -377,12 +377,11 @@ function updateBarWidth(audio) {
     if (toggleShuffle){
       marker.style.display = 'flex';
       musicQueue.sort(() => Math.random() - 0.5)
-      console.log(musicQueue)
     }else{
       marker.style.display = 'none';
       musicQueue = musicQueueDefault;
-      console.log(musicQueue);
     }
+    console.log(musicQueue);
     renderQueue();
   }
 
