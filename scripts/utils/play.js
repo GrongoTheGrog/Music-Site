@@ -11,12 +11,12 @@ let toggleShuffle;
 let toggleLoop = false;
 let currentLoop = false;
 let mouseDown;
+let porcentage = 50;
 
 
 ////
 
 let image;
-let porcentage = 50;
 let musicArray = []
 let musicButtonPlay = [];
 let imagelist;
@@ -211,78 +211,6 @@ function refreshImageList(){
 }
 
 
-
-//GENERATE THE MUSIC QUEUE
-async function renderMusicQueue(index){
-  const data = await fetchDataPlaylist(id);
-  const image = data.results[0].image;
-
-
-
-  let html = ``;
-
-  html += `
-    <div class="queue-header">
-      <img src="image-album/sapo copy.jpg" alt="profile pic" class="img-profile-queue">
-
-      <div class="flex-text-queue-header">
-        <div class="text-queue-header">Music Queue</div>
-      </div>
-    </div>
-
-    <div class="text-queue-header text-queue-title" style="font-size: 18px;">
-      &#183 Playing Now
-    </div>
-
-    <div class="queue-div" id="playingNowContainer"> <!-- PLAYING NOW -->
-      <img src="${image}" alt="a day at the races" class="album-img-music-queue">
-
-      <div class="queue-text">
-        <div class="queue-music-name text-queue-header">
-          ${musicButtonPlay[index][1].name}
-        </div>
-
-        <div class="queue-album-name text-queue-header">
-          ${data.results[0].name}
-        </div>
-      </div>
-    </div>
-
-    <div class="text-queue-header text-queue-title" style="font-size: 18px;">
-      &#183 Next
-    </div>
-
-  `;
-
-  for(let i = 1; i < musicArray.length - index; i++){
-    const current = index + i;
-    html += `
-      <div class="queue-div" id="nextContainer"> <!-- NEXT2 -->
-        <img src="${image}" alt="a day at the races" class="album-img-music-queue">
-
-        <div class="queue-text">
-          <div class="queue-music-name text-queue-header">
-            ${musicButtonPlay[current][1].name}
-          </div>
-
-          <div class="queue-album-name text-queue-header">
-            ${data.results[0].name}
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  const queue = document.querySelector('.queue-main-div');
-  queue.innerHTML = html;
-
-  const timerFooter = document.querySelector('.final-timer');
-  timerFooter.innerHTML = transformToMinutes(Number(musicArray[index].duration));
-  
-}
-
-
-
 //
 
 
@@ -302,7 +230,8 @@ async function renderMusicQueue(index){
 
 export async function playAll(){
   musicQueue = await fetchDataPlaylist('1910');
-  musicQueue = musicQueue.results[0].tracks;
+  musicQueue = musicQueue.results;
+  musicQueue.sort((a, b) => a.position - b.position);
   const musicQueueDefault = [...musicQueue];
   console.log(musicQueue);
 
@@ -320,6 +249,8 @@ export async function playAll(){
       currentMusic.play()
       displayMusicProgress()
       updateTimerDuration();
+      renderQueue();
+      currentMusic.volume = porcentage / 100;
     }
 
   }
@@ -335,10 +266,13 @@ export async function playAll(){
   function playTrack(){
     currentMusic.pause();
     currentMusic = new Audio(musicQueue[index].audio);
+    currentMusic.volume = porcentage / 100;
     toggle = true;
     console.log(index);
     toggleButtonPlay()
     displayMusicProgress()
+    renderQueue();
+    updateTimerDuration();
   }
 
 
@@ -353,7 +287,6 @@ export async function playAll(){
       }
     }
     playTrack()
-    updateTimerDuration();
   })
 
   // go next
@@ -366,7 +299,6 @@ export async function playAll(){
       }
     }
     playTrack();
-    updateTimerDuration();
   })
 
 
@@ -380,7 +312,7 @@ function updateBarWidth(audio) {
   porcentage = mousex / containerRect.width * 100;
 
 
-  porcentage = Math.max(0, Math.min(porcentage, 100));
+  porcentage = Math.max(0, Math.min(porcentage, 100)); // clamp porcentage to more than 0 and less than 100
 
 
 
@@ -451,6 +383,7 @@ function updateBarWidth(audio) {
       musicQueue = musicQueueDefault;
       console.log(musicQueue);
     }
+    renderQueue();
   }
 
     
@@ -517,6 +450,62 @@ function updateBarWidth(audio) {
     const timer = document.querySelector('.final-timer');
 
     timer.textContent = transformToMinutes(musicQueue[index].duration);
+  }
+
+  function renderQueue(){
+    let html = '';
+
+    html += `
+    <div class="queue-header">
+      <img src="image-album/sapo copy.jpg" alt="profile pic" class="img-profile-queue">
+
+      <div class="flex-text-queue-header">
+        <div class="text-queue-header">Music Queue</div>
+      </div>
+    </div>
+
+    <div class="text-queue-header text-queue-title" style="font-size: 18px;">
+      &#183 Playing Now
+    </div>
+
+    <div class="queue-div" id="playingNowContainer"> <!-- PLAYING NOW -->
+      <img src="${musicQueue[index].album_image}" alt="a day at the races" class="album-img-music-queue">
+
+      <div class="queue-text">
+        <div class="queue-music-name text-queue-header">
+          ${musicQueue[index].name}
+        </div>
+
+        <div class="queue-album-name text-queue-header">
+          ${musicQueue[index].album_name}
+        </div>
+      </div>
+    </div>
+
+    <div class="text-queue-header text-queue-title" style="font-size: 18px;">
+      &#183 Next
+    </div>
+    `
+
+    for (let i = index + 1; i < musicQueue.length; i++){
+      html+= `
+        <div class="queue-div" id="nextContainer"> <!-- NEXT2 -->
+          <img src="${musicQueue[i].album_image}" alt="a day at the races" class="album-img-music-queue">
+  
+          <div class="queue-text">
+            <div class="queue-music-name text-queue-header">
+              ${musicQueue[i].name}
+            </div>
+  
+            <div class="queue-album-name text-queue-header">
+              ${musicQueue[i].album_name}
+            </div>
+          </div>
+        </div>
+      `
+    }
+
+    document.querySelector('.js-queue-bar').innerHTML = html;
   }
 
 

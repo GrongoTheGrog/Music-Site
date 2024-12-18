@@ -1,6 +1,6 @@
 export default async function fetchDataPlaylist(id){
   try{
-      const response = await fetch(`https://api.jamendo.com/v3.0/albums/tracks?client_id=1797a491&id=${id}`)
+      const response = await fetch(`https://api.jamendo.com/v3.0/tracks?client_id=1797a491&album_id=${id}`)
 
       if (!response.ok){
         throw new Error('HTTP Error: ', response.status);
