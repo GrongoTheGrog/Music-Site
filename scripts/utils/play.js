@@ -19,7 +19,7 @@ let porcentage = 50;
 let image;
 let musicArray = []
 let musicButtonPlay = [];
-
+let imagelist;
 
 let defaultMusicButtonPlay;
 
